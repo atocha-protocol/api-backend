@@ -401,9 +401,6 @@
 </head>
 <body class="antialiased">
 <h1>Need record to databases:</h1>
-<div> 'oauth_token'=>{{$oauth_token}} </div>
-<div> 'oauth_token_secret'=> {{$oauth_token_secret}}</div>
-<div> 'user_id'=>{{$user_id}}</div>
-<div> 'screen_name'=>{{$screen_name}}</div>
+<pre> 'oauth_token'=>{{print_r($twiter_info)}} </pre>
 </body>
 </html>
