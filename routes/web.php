@@ -242,7 +242,7 @@ Route::get('/twitter_bind/{ato_address}', function (Request $request, $ato_addre
             'status' => 'failed',
             'tip' => "No binding found, {$ato_address}",
         ];
-        return view('show_json', ['encode_data'=>$encode_data, ]);
+        return json_encode($encode_data);
     }
     $encode_data = [
         'status' => 'success',
@@ -252,7 +252,7 @@ Route::get('/twitter_bind/{ato_address}', function (Request $request, $ato_addre
             'twitter_profile_image_url_https' => $bind_user->twitter_profile_image_url_https,
         ],
     ];
-    return view('show_json', ['encode_data'=>$encode_data, ]);
+    return json_encode($encode_data);
 });
 
 // $url="https://api.twitter.com/2/users/".$config['twitter_id']."/followers";
