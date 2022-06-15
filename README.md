@@ -2,6 +2,8 @@
 * https://laravel.com/docs/9.x#choosing-your-sail-services
 * Install curl -s "https://laravel.build/example-app?with=mysql,redis" | bash
 
+## Twitter setting
+* `https://developer.twitter.com/en/portal/dashboard`
 
 ## Start service
 * start service for develop `./vendor/bin/sail up`
@@ -37,4 +39,11 @@
 * `./vendor/bin/sail artisan migrate`
 
 
+## Bind twitter with ADDRESS
+* Example:
+```text
+http://localhost:6999/bind/5EUwwkgp1wyNNaG9QEdsM5EFWtS46WUcDT5Bkq4tEJapD9ZP
+```
 
+## Support cors
+* View `https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS`
