@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => ['/twitter_bind/*', 'sanctum/csrf-cookie'],
 
     'allowed_methods' => ['*'],
 
