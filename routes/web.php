@@ -54,7 +54,7 @@ Route::get('/callback_bind', function (Request $request) {
             'status' => 'failed',
             'tip' => $exc->getMessage(),
         ];
-        return view('show_json', ['encode_data'=>$encode_data, ]);
+        return json_encode($encode_data);
     }
 
     // Array ( [oauth_token] => 1511200895165296648-jANgwBzreieJhF7I7j3p7ARPSa8g8h [oauth_token_secret] => 5X4fwPvH0lK4gQoTdg5CBKurK98aoTKh8viw44B0TRbr6 [user_id] => 1511200895165296648 [screen_name] => AtochaGuild )
@@ -77,7 +77,7 @@ Route::get('/callback_bind', function (Request $request) {
             'status' => 'failed',
             'tip' => 'Need bind address',
         ];
-        return view('show_json', ['encode_data'=>$encode_data, ]);
+        return json_encode($encode_data);
     }
 
     // check user
@@ -104,7 +104,7 @@ Route::get('/callback_bind', function (Request $request) {
                 'status' => 'failed',
                 'tip' => "Duplicate entry '{$db_twitter_screen_name}' for key 'twitter_bind",
             ];
-            return view('show_json', ['encode_data'=>$encode_data, ]);
+            return json_encode($encode_data);
         }
     }else{
         // check screen_name exists.
@@ -118,7 +118,7 @@ Route::get('/callback_bind', function (Request $request) {
                 'status' => 'failed',
                 'tip' => "{$db_twitter_screen_name} is already bound.",
             ];
-            return view('show_json', ['encode_data'=>$encode_data, ]);
+            return json_encode($encode_data);
         }
 
         // with insert
@@ -142,7 +142,7 @@ Route::get('/callback_bind', function (Request $request) {
             'twitter_screen_name' => $db_twitter_screen_name,
         ],
     ];
-    return view('show_json', ['encode_data'=>$encode_data, ]);
+    return json_encode($encode_data);
 
 });
 
@@ -167,7 +167,7 @@ Route::get('/callback_unbind', function (Request $request) {
             'status' => 'failed',
             'tip' => $exc->getMessage(),
         ];
-        return view('show_json', ['encode_data'=>$encode_data, ]);
+        return json_encode($encode_data);
     }
 
     // ato_address,twitter_screen_name
@@ -178,7 +178,7 @@ Route::get('/callback_unbind', function (Request $request) {
             'status' => 'failed',
             'tip' => 'Need bind address',
         ];
-        return view('show_json', ['encode_data'=>$encode_data, ]);
+        return json_encode($encode_data);
     }
 
     // check user
@@ -217,7 +217,7 @@ Route::get('/callback_unbind', function (Request $request) {
                 'status' => 'failed',
                 'tip' => "No binding found, {$db_ato_address} & {$db_twitter_screen_name}",
             ];
-            return view('show_json', ['encode_data'=>$encode_data, ]);
+            return json_encode($encode_data);
         }
 
     }
@@ -229,7 +229,7 @@ Route::get('/callback_unbind', function (Request $request) {
             'twitter_screen_name' => $db_twitter_screen_name,
         ],
     ];
-    return view('show_json', ['encode_data'=>$encode_data, ]);
+    return json_encode($encode_data);
 
 });
 
