@@ -153,7 +153,8 @@ Route::get('/callback_bind', function (Request $request) {
 function toRefIfExists($encode_data, $request) {
     $db_bind_ato_ref = trim($request->session()->get('bind_ato_ref', ''));
     if($db_bind_ato_ref != '') {
-        header("Location: $db_bind_ato_ref?status={$encode_data->status}");
+        $db_bind_ato_ref = base64_decode($db_bind_ato_ref);
+        header("Location: $db_bind_ato_ref?status={$encode_data['status']}");
         exit;
     }
     return json_encode($encode_data);
