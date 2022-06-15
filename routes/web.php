@@ -15,22 +15,24 @@ Route::get('/', function () {
     echo 'api.atocha.io';
 });
 
-Route::get('/bind/{ato_address}', function (Request $request, $ato_address) {
+Route::get('/bind/{ato_address}/{ref?}', function (Request $request, $ato_address, $ref) {
     $connection = new TwitterOAuth(env('TWITTER_CONSUMER_KEY'), env('TWITTER_CONSUMER_SECRET'), env('TWITTER_ACCESS_TOKEN'), env('TWITTER_ACCESS_TOKEN_SECRET'));
     $request_tokens = $connection->oauth("oauth/request_token", ["oauth_callback"=> env('APP_URL')."/callback_bind"]);
     $content = $connection->url('oauth/authorize', array('oauth_token' => $request_tokens['oauth_token']));
 
     $request->session()->put('ato_address', $ato_address);
+    $request->session()->put('bind_ato_ref', $ref);
 
     return view('bindredirect', ['author'=>'Kami', 'content'=> $content, 'request_tokens'=>$request_tokens]);
 });
 
-Route::get('/unbind/{ato_address}', function (Request $request, $ato_address) {
+Route::get('/unbind/{ato_address}/{ref?}', function (Request $request, $ato_address, $ref) {
     $connection = new TwitterOAuth(env('TWITTER_CONSUMER_KEY'), env('TWITTER_CONSUMER_SECRET'), env('TWITTER_ACCESS_TOKEN'), env('TWITTER_ACCESS_TOKEN_SECRET'));
     $request_tokens = $connection->oauth("oauth/request_token", ["oauth_callback"=> env('APP_URL')."/callback_unbind"]);
     $content = $connection->url('oauth/authorize', array('oauth_token' => $request_tokens['oauth_token']));
 
     $request->session()->put('ato_address', $ato_address);
+    $request->session()->put('bind_ato_ref', $ref);
 
     return view('bindredirect', ['author'=>'Kami', 'content'=> $content, 'request_tokens'=>$request_tokens]);
 });
@@ -54,7 +56,7 @@ Route::get('/callback_bind', function (Request $request) {
             'status' => 'failed',
             'tip' => $exc->getMessage(),
         ];
-        return json_encode($encode_data);
+        return toRefIfExists($encode_data, $request);
     }
 
     // Array ( [oauth_token] => 1511200895165296648-jANgwBzreieJhF7I7j3p7ARPSa8g8h [oauth_token_secret] => 5X4fwPvH0lK4gQoTdg5CBKurK98aoTKh8viw44B0TRbr6 [user_id] => 1511200895165296648 [screen_name] => AtochaGuild )
@@ -77,7 +79,7 @@ Route::get('/callback_bind', function (Request $request) {
             'status' => 'failed',
             'tip' => 'Need bind address',
         ];
-        return json_encode($encode_data);
+        return toRefIfExists($encode_data, $request);
     }
 
     // check user
@@ -104,7 +106,7 @@ Route::get('/callback_bind', function (Request $request) {
                 'status' => 'failed',
                 'tip' => "Duplicate entry '{$db_twitter_screen_name}' for key 'twitter_bind",
             ];
-            return json_encode($encode_data);
+            return toRefIfExists($encode_data, $request);
         }
     }else{
         // check screen_name exists.
@@ -118,7 +120,7 @@ Route::get('/callback_bind', function (Request $request) {
                 'status' => 'failed',
                 'tip' => "{$db_twitter_screen_name} is already bound.",
             ];
-            return json_encode($encode_data);
+            return toRefIfExists($encode_data, $request);
         }
 
         // with insert
@@ -142,10 +144,20 @@ Route::get('/callback_bind', function (Request $request) {
             'twitter_screen_name' => $db_twitter_screen_name,
         ],
     ];
-    return json_encode($encode_data);
+
+
+    return toRefIfExists($encode_data, $request);
 
 });
 
+function toRefIfExists($encode_data, $request) {
+    $db_bind_ato_ref = trim($request->session()->get('bind_ato_ref', ''));
+    if($db_bind_ato_ref != '') {
+        header("Location: $db_bind_ato_ref?status={$encode_data->status}");
+        exit;
+    }
+    return json_encode($encode_data);
+}
 
 Route::get('/callback_unbind', function (Request $request) {
     $oauth_token = request()->get('oauth_token');
