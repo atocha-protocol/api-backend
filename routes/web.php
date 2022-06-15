@@ -26,7 +26,7 @@ Route::get('/bind/{ato_address}/{ref?}', function (Request $request, $ato_addres
     return view('bindredirect', ['author'=>'Kami', 'content'=> $content, 'request_tokens'=>$request_tokens]);
 });
 
-Route::get('/unbind/{ato_address}/{ref?}', function (Request $request, $ato_address, $ref) {
+Route::get('/unbind/{ato_address}/{ref}', function (Request $request, $ato_address, $ref) {
     $connection = new TwitterOAuth(env('TWITTER_CONSUMER_KEY'), env('TWITTER_CONSUMER_SECRET'), env('TWITTER_ACCESS_TOKEN'), env('TWITTER_ACCESS_TOKEN_SECRET'));
     $request_tokens = $connection->oauth("oauth/request_token", ["oauth_callback"=> env('APP_URL')."/callback_unbind"]);
     $content = $connection->url('oauth/authorize', array('oauth_token' => $request_tokens['oauth_token']));
