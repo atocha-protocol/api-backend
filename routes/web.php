@@ -154,7 +154,11 @@ function toRefIfExists($encode_data, $request) {
     $db_bind_ato_ref = trim($request->session()->get('bind_ato_ref', ''));
     if($db_bind_ato_ref != '') {
         $db_bind_ato_ref = base64_decode($db_bind_ato_ref);
-        header("Location: $db_bind_ato_ref?status={$encode_data['status']}");
+        $msg='';
+        if($encode_data['status'] == 'failed') {
+            $msg=urlencode($encode_data['tip']);
+        }
+        header("Location: $db_bind_ato_ref?status={$encode_data['status']}&msg={$msg}");
         exit;
     }
     return json_encode($encode_data);
