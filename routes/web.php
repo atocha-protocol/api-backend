@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 Route::get('/bind/{ato_address}', function (Request $request, $ato_address) {
     $connection = new TwitterOAuth(env('TWITTER_CONSUMER_KEY'), env('TWITTER_CONSUMER_SECRET'), env('TWITTER_ACCESS_TOKEN'), env('TWITTER_ACCESS_TOKEN_SECRET'));
-    $request_tokens = $connection->oauth("oauth/request_token", ["oauth_callback"=> "http://localhost:6999/callback_bind"]);
+    $request_tokens = $connection->oauth("oauth/request_token", ["oauth_callback"=> env('APP_URL')."/callback_bind"]);
     $content = $connection->url('oauth/authorize', array('oauth_token' => $request_tokens['oauth_token']));
 
     $request->session()->put('ato_address', $ato_address);
@@ -27,7 +27,7 @@ Route::get('/bind/{ato_address}', function (Request $request, $ato_address) {
 
 Route::get('/unbind/{ato_address}', function (Request $request, $ato_address) {
     $connection = new TwitterOAuth(env('TWITTER_CONSUMER_KEY'), env('TWITTER_CONSUMER_SECRET'), env('TWITTER_ACCESS_TOKEN'), env('TWITTER_ACCESS_TOKEN_SECRET'));
-    $request_tokens = $connection->oauth("oauth/request_token", ["oauth_callback"=> "http://localhost:6999/callback_unbind"]);
+    $request_tokens = $connection->oauth("oauth/request_token", ["oauth_callback"=> env('APP_URL')."/callback_unbind"]);
     $content = $connection->url('oauth/authorize', array('oauth_token' => $request_tokens['oauth_token']));
 
     $request->session()->put('ato_address', $ato_address);
