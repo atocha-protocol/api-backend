@@ -15,7 +15,7 @@ Route::get('/', function () {
     echo 'api.atocha.io';
 });
 
-Route::get('/bind/{ato_address}/{ref}', function (Request $request, $ato_address, $ref) {
+Route::get('/bind/{ato_address}/{ref?}', function (Request $request, $ato_address, $ref) {
     $connection = new TwitterOAuth(env('TWITTER_CONSUMER_KEY'), env('TWITTER_CONSUMER_SECRET'), env('TWITTER_ACCESS_TOKEN'), env('TWITTER_ACCESS_TOKEN_SECRET'));
     $request_tokens = $connection->oauth("oauth/request_token", ["oauth_callback"=> env('APP_URL')."/callback_bind"]);
     $content = $connection->url('oauth/authorize', array('oauth_token' => $request_tokens['oauth_token']));
@@ -26,7 +26,7 @@ Route::get('/bind/{ato_address}/{ref}', function (Request $request, $ato_address
     return view('bindredirect', ['author'=>'Kami', 'content'=> $content, 'request_tokens'=>$request_tokens]);
 });
 
-Route::get('/unbind/{ato_address}/{ref}', function (Request $request, $ato_address, $ref) {
+Route::get('/unbind/{ato_address}/{ref?}', function (Request $request, $ato_address, $ref) {
     $connection = new TwitterOAuth(env('TWITTER_CONSUMER_KEY'), env('TWITTER_CONSUMER_SECRET'), env('TWITTER_ACCESS_TOKEN'), env('TWITTER_ACCESS_TOKEN_SECRET'));
     $request_tokens = $connection->oauth("oauth/request_token", ["oauth_callback"=> env('APP_URL')."/callback_unbind"]);
     $content = $connection->url('oauth/authorize', array('oauth_token' => $request_tokens['oauth_token']));
@@ -184,7 +184,7 @@ Route::get('/callback_unbind', function (Request $request) {
             'status' => 'failed',
             'tip' => $exc->getMessage(),
         ];
-        return json_encode($encode_data);
+        return toRefIfExists($encode_data, $request);
     }
 
     // ato_address,twitter_screen_name
@@ -195,7 +195,7 @@ Route::get('/callback_unbind', function (Request $request) {
             'status' => 'failed',
             'tip' => 'Need bind address',
         ];
-        return json_encode($encode_data);
+        return toRefIfExists($encode_data, $request);
     }
 
     // check user
@@ -206,8 +206,6 @@ Route::get('/callback_unbind', function (Request $request) {
 
     // check user
     if($bind_user_exists) {
-
-
         DB::table('twitter_bind')
             ->where('ato_address', '=', $db_ato_address )
             ->where('twitter_screen_name', '=', $db_twitter_screen_name)
@@ -234,7 +232,7 @@ Route::get('/callback_unbind', function (Request $request) {
                 'status' => 'failed',
                 'tip' => "No binding found, {$db_ato_address} & {$db_twitter_screen_name}",
             ];
-            return json_encode($encode_data);
+            return toRefIfExists($encode_data, $request);
         }
 
     }
@@ -246,7 +244,7 @@ Route::get('/callback_unbind', function (Request $request) {
             'twitter_screen_name' => $db_twitter_screen_name,
         ],
     ];
-    return json_encode($encode_data);
+    return toRefIfExists($encode_data, $request);
 
 });
 
