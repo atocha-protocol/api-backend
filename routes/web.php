@@ -14,11 +14,15 @@ Route::get('/', function () {
 //    $content = $connection->url('oauth/authorize', array('oauth_token' => $request_tokens['oauth_token']));
 //    return view('home', ['author'=>'Kami', 'content'=> $content, 'request_tokens'=>$request_tokens]);
     echo 'api.atocha.io';
+    echo env('APP_URL');
 });
+
+
 
 Route::get('/bind/{ato_address}/{ref}', function (Request $request, $ato_address, $ref) {
     $connection = new TwitterOAuth(env('TWITTER_CONSUMER_KEY'), env('TWITTER_CONSUMER_SECRET'), env('TWITTER_ACCESS_TOKEN'), env('TWITTER_ACCESS_TOKEN_SECRET'));
-    $request_tokens = $connection->oauth("oauth/request_token", ["oauth_callback"=> env('APP_URL')."/callback_bind"]);
+//    $request_tokens = $connection->oauth("oauth/request_token", ["oauth_callback"=> env('APP_URL')."/callback_bind"]);
+    $request_tokens = $connection->oauth("oauth/request_token", ["oauth_callback"=> env('APP_URL')."/callback_bind", "x_auth_access_type"=>"write"]);
     $content = $connection->url('oauth/authorize', array('oauth_token' => $request_tokens['oauth_token']));
 
     $request->session()->put('ato_address', $ato_address);
