@@ -47,3 +47,8 @@ http://localhost:6999/bind/5EUwwkgp1wyNNaG9QEdsM5EFWtS46WUcDT5Bkq4tEJapD9ZP
 
 ## Support cors
 * View `https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS`
+
+## Install twitter-api-v2
+* `./vendor/bin/sail composer require noweh/twitter-api-v2-php`
+
+

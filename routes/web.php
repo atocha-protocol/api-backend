@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 //use Illuminate\Http\Request;
+use Noweh\TwitterApi\Client;
 
 Route::get('/', function () {
 //    $connection = new TwitterOAuth(env('TWITTER_CONSUMER_KEY'), env('TWITTER_CONSUMER_SECRET'), env('TWITTER_ACCESS_TOKEN'), env('TWITTER_ACCESS_TOKEN_SECRET'));
@@ -286,4 +287,52 @@ function curlTwitterData($url) {
     return $result;
 }
 
+
+
+Route::get('/twitter_post/{ato_address}', function (Request $request, $ato_address) {
+    $bind_user = DB::table('twitter_bind')
+        ->where('ato_address', '=', $ato_address )
+        ->first();
+    if(!$bind_user || !$bind_user->twitter_screen_name) {
+        $encode_data = [
+            'status' => 'failed',
+            'tip' => "No binding found, {$ato_address}",
+        ];
+        return json_encode($encode_data);
+    }
+
+    $twitter_full_data = $bind_user->twitter_full_data;
+    $twitter_full_data_obj = json_decode($twitter_full_data);
+
+    $settings = [
+        'account_id' => $twitter_full_data_obj->user_id,
+        'consumer_key' => env('TWITTER_CONSUMER_KEY'),
+        'consumer_secret' => env('TWITTER_CONSUMER_SECRET'),
+        'bearer_token' => env('TWITTER_BEARER_TOKEN'),
+        'access_token' => $bind_user->oauth_token,
+        'access_token_secret' => $bind_user->oauth_token_secret
+    ];
+
+//    $encode_data = [
+//        'status' => 'success',
+//        'tip' => $settings,
+//    ];
+//    return json_encode($encode_data);
+
+    $client = new Client($settings);
+    $result = $client->tweet()->performRequest('POST', ['text' => 'Hello Atocha.']);
+    $encode_data = [
+        'status' => 'success',
+        'tip' => $result,
+    ];
+    return json_encode($encode_data);
+});
+
+//TWITTER_CONSUMER_KEY=nRIZOWSC7Axi9XcboSErJog4o
+//TWITTER_CONSUMER_SECRET=oU3rUlE4ib5pqziFlLuR2Ep8FLH9YctoxAWDcQB8XpHyoqbRZk
+//TWITTER_BEARER_TOKEN=AAAAAAAAAAAAAAAAAAAAAJSSbAEAAAAAwrVnSY%2BWQWH2%2Fk6WbztmEhACzdE%3DOs54KyZWvgMNBZdHqUGN0BubKOyVojdFcQjo2JleWK3lY80N4H
+//TWITTER_ACCESS_TOKEN=1511200895165296648-jANgwBzreieJhF7I7j3p7ARPSa8g8h
+//TWITTER_ACCESS_TOKEN_SECRET=5X4fwPvH0lK4gQoTdg5CBKurK98aoTKh8viw44B0TRbr6
+//TWITTER_CLIENT_ID=WVRTdGFzOHZNaGM1bThGRDdEYXQ6MTpjaQ
+//TWITTER_CLIENT_SECRET=-O6_4TSlDEZyi8MNu2wqnVxbNjK_vt0izrcP735rD8_6mc3pvd
 
