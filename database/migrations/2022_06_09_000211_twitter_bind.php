@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        // NONE
+        Schema::dropIfExists('twitter_bind');
     }
 };

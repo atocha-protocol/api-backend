@@ -51,4 +51,89 @@ http://localhost:6999/bind/5EUwwkgp1wyNNaG9QEdsM5EFWtS46WUcDT5Bkq4tEJapD9ZP
 ## Install twitter-api-v2
 * `./vendor/bin/sail composer require noweh/twitter-api-v2-php`
 
+## Develop for TaskReward
+### Make Controller
+* ./vendor/bin/sail artisan make:controller TaskController --resource
+
+### Make data migrations
+* `./vendor/bin/sail artisan make:migration task_reward`
+* `./vendor/bin/sail artisan make:migration task_request`
+
+### Fill data schema.
+* For TaskReward
+```php
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('task_reward', function (Blueprint $table) {
+            $table->id();
+            $table->string('task_kind', 50);
+            $table->string('task_title', 255);
+            $table->text('task_detail');
+            $table->bigInteger('task_prize');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('task_reward');
+    }
+};
+```
+
+* For TaskRequest
+```php
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('task_request', function (Blueprint $table) {
+            $table->id();
+            $table->string('request_owner', 100);
+            $table->integer('request_status');
+            $table->text('request_detail');
+            $table->timestamps();
+            $table->unsignedBigInteger('task_id')->index()->comment('Foreign key with task_reward');
+            $table->foreign('task_id')->references('id')->on('task_reward');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('task_request');
+    }
+};
+```
+* Run migrate `./vendor/bin/sail artisan migrate`
+
+
+### Make module 
+
+* Make Module of task_reward table 
+`./vendor/bin/sail artisan make:model TaskReward`
+
+* Make Module of task_request table   
+`./vendor/bin/sail artisan make:model TaskRequest`
 
