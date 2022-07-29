@@ -137,3 +137,34 @@ return new class extends Migration
 * Make Module of task_request table   
 `./vendor/bin/sail artisan make:model TaskRequest`
 
+## For dashboard with 
+```text
+./vendor/bin/sail composer require backpack/crud
+./vendor/bin/sail artisan backpack:install
+
+# (optional) require Backpack's tool that allows you to generate CRUDs
+./vendor/bin/sail composer require --dev backpack/generators
+```
+
+### Login for testing
+* Open `your-app-name/admin` on your browser.
+* Check user table and login
+
+### Configure
+In most cases, it's a good idea to look at the configuration files and make the admin panel your own:
+
+You should change the configuration values in config/backpack/base.php to make the admin panel your own. Backpack is white label, so you can change everything: menu color, project name, developer name etc.
+By default all users are considered admins; If that's not what you want in your application (you have both users and admins), please:
+Change app/Http/Middleware/CheckIfAdmin.php, particularly checkIfUserIsAdmin($user), to make sure you only allow admins to access the admin panel;
+Change app/Providers/RouteServiceProvider::HOME, which will send logged in (but not admin) users to /home, to something that works for your app;
+If your User model has been moved from the default App\Models\User.php, please change config/backpack/base.php to use the correct user model under the user_model_fqn config key;
+
+
+### Make module
+
+* Make single `./vendor/bin/sail artisan backpack:crud User`
+* Or make all `./vendor/bin/sail artisan backpack:build`
+
+
+### Input laravel/ui for user manage
+

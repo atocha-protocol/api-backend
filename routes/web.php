@@ -302,3 +302,4 @@ Route::get('task/requestList/{request_owner}', 'App\Http\Controllers\TaskControl
 Route::post('task/do', 'App\Http\Controllers\TaskController@do')->name('task.do');
 Route::post('task/apply', 'App\Http\Controllers\TaskController@apply')->name('task.apply');
 Route::get('task/admin', 'App\Http\Controllers\TaskController@admin')->name('task.admin');
+Route::get('task/payto', 'App\Http\Controllers\TaskController@payto')->name('task.payto');
