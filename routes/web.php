@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\DB;
 //use Illuminate\Http\Request;
 use Noweh\TwitterApi\Client;
 use Tools\Tools;
+use Illuminate\Support\Facades\URL;
+
+$url = config('app.url');
+URL::forceRootUrl($url);
 
 Route::get('/', function () {
 //    $connection = new TwitterOAuth(env('TWITTER_CONSUMER_KEY'), env('TWITTER_CONSUMER_SECRET'), env('TWITTER_ACCESS_TOKEN'), env('TWITTER_ACCESS_TOKEN_SECRET'));
@@ -17,6 +21,8 @@ Route::get('/', function () {
     echo 'api.atocha.io';
     echo '<br/>';
     echo env('APP_URL');
+    echo '<br/>';
+    echo route('backpack.auth.register');
 });
 
 
