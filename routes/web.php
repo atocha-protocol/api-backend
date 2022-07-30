@@ -11,7 +11,7 @@ use Tools\Tools;
 use Illuminate\Support\Facades\URL;
 
 $url = config('app.url');
-URL::forceRootUrl($url);
+URL::forceRootUrl("https://www.google.com");
 
 Route::get('/', function () {
 //    $connection = new TwitterOAuth(env('TWITTER_CONSUMER_KEY'), env('TWITTER_CONSUMER_SECRET'), env('TWITTER_ACCESS_TOKEN'), env('TWITTER_ACCESS_TOKEN_SECRET'));
