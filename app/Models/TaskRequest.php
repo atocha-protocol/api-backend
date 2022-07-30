@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Collection;
  * @property string $request_detail
  * @property string $created_at
  * @property string $updated_at
+ * @property string $request_expand
  * @property integer $task_id
  */
 class TaskRequest extends Model

@@ -165,6 +165,8 @@ If your User model has been moved from the default App\Models\User.php, please c
 * Make single `./vendor/bin/sail artisan backpack:crud User`
 * Or make all `./vendor/bin/sail artisan backpack:build`
 
+### Change register page.
+* `./vendor/bin/sail artisan make:controller RegisterController --invokable`
 
-### Input laravel/ui for user manage
+
 

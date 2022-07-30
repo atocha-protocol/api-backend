@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('request_owner', 100);
             $table->integer('request_status');
             $table->text('request_detail');
+            $table->text('request_expand');
             $table->timestamps();
             $table->unsignedBigInteger('task_id')->index()->comment('Foreign key with task_reward');
             $table->foreign('task_id')->references('id')->on('task_reward');
