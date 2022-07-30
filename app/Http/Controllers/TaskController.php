@@ -88,6 +88,7 @@ class TaskController extends Controller
         if(is_null($task_request)){
             $task_request = new TaskRequest();
             $task_request->request_status = TaskRequest::REQUEST_STATUS_IS_SUBMITTED;
+            $task_request->request_expand = '{}';
         }else if(TaskRequest::REQUEST_STATUS_IS_SUBMITTED != $task_request->request_status){
             return view('task/apply_failed', []);
         }
