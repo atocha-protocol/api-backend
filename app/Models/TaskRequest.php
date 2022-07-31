@@ -24,6 +24,7 @@ class TaskRequest extends Model
     const REQUEST_STATUS_IS_VALID = 2;
     const REQUEST_STATUS_IS_INVALID = 3;
     const REQUEST_STATUS_IS_FINAL = 4;
+    const REQUEST_STATUS_IS_SENDING = 5;
 
     use HasFactory;
 
@@ -52,7 +53,8 @@ class TaskRequest extends Model
     public function buttonPayTo($crud = false)
     {
         if (Self::REQUEST_STATUS_IS_VALID == $this->request_status) {
-            $link_url = route('task.payto', ['to_addr'=> $this->request_owner, 'task_id'=>$this->task_id ]);
+//            $link_url = route('task.payto', ['to_addr'=> $this->request_owner, 'task_id'=>$this->task_id ]);
+            $link_url = env('REWARD_SEND_SERVICE_URI')."?request_id={$this->id}";
             return "<a class='btn btn-sm btn-link' target='_blank' href='{$link_url}' data-toggle='tooltip' title='Click the button to send awards.'><i class='fa fa-search'></i>Pay to</a>";
         }
         return '<span>--</span>';

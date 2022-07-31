@@ -16,7 +16,7 @@ class TaskRewardCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+//    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     /**
@@ -29,6 +29,7 @@ class TaskRewardCrudController extends CrudController
         CRUD::setModel(\App\Models\TaskReward::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/task-reward');
         CRUD::setEntityNameStrings('task reward', 'task rewards');
+        $this->crud->removeButton("delete");
     }
 
     /**

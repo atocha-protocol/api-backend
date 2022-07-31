@@ -99,7 +99,7 @@ class TaskRequestCrudController extends CrudController
     }
 
     private function getRequestStatusSelectArray($update_mod=true) {
-        $base_arr = [2=>'Valid', 3=>'Invalid'];
+        $base_arr = [2=>'Valid', 3=>'Invalid', 5=>'Sending'];
         if($update_mod) {
             $base_arr[1]='Submitted';
             $base_arr[4]='Final';
