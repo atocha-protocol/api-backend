@@ -30,7 +30,7 @@ class TaskRequest extends Model
 
     protected $table = 'task_request';
 
-    protected $fillable = ['request_owner', 'request_status', 'request_detail', '$task_id',];
+    protected $fillable = ['request_owner', 'request_status', 'request_detail', 'request_expand', '$task_id',];
 
     /**
      *

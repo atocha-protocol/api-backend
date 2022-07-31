@@ -6,7 +6,6 @@ use Abraham\TwitterOAuth\Request;
 use App\Http\Requests\TaskRequestRequest;
 use App\Models\TaskReward;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
-use Backpack\CRUD\app\Http\Controllers\Operations\KamiOperation;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Facades\Route;
 
@@ -69,6 +68,7 @@ class TaskRequestCrudController extends CrudController
         CRUD::column('request_owner');
         CRUD::column('request_status')->type('select_from_array')->options($this->getRequestStatusSelectArray());
         CRUD::column('request_detail');
+        CRUD::column('request_expand');
         CRUD::column('created_at');
         CRUD::column('updated_at');
         CRUD::column('task_id')->type('select_from_array')->options($select_task_list);
