@@ -42,7 +42,7 @@ Route::get('/bind/{ato_address}/{ref}', function (Request $request, $ato_address
 Route::get('/test_bind', function (Request $request) {
     $test_url_data = base64_encode('http://www.baidu.com');
     $request->session()->put('bind_ato_ref', $test_url_data);
-    return KamiTools::toRefIfExists($test_url_data, $request);
+    return KamiKamiTools::toRefIfExists($test_url_data, $request);
 });
 
 // https://api.atocha.io/bind/5DvNVQ69obcSG5KwxSmbZYrVPkwvaGSSH6EswjLuNeEvBCBs/aHR0cHM6Ly9wbGF5LmF0b2NoYS5pby9teV9ob21l
@@ -76,7 +76,7 @@ Route::get('/callback_bind', function (Request $request) {
             'status' => 'failed',
             'tip' => $exc->getMessage(),
         ];
-        return Tools::toRefIfExists($encode_data, $request);
+        return KamiTools::toRefIfExists($encode_data, $request);
     }
 
     // Array ( [oauth_token] => 1511200895165296648-jANgwBzreieJhF7I7j3p7ARPSa8g8h [oauth_token_secret] => 5X4fwPvH0lK4gQoTdg5CBKurK98aoTKh8viw44B0TRbr6 [user_id] => 1511200895165296648 [screen_name] => AtochaGuild )
@@ -99,7 +99,7 @@ Route::get('/callback_bind', function (Request $request) {
             'status' => 'failed',
             'tip' => 'Need bind address',
         ];
-        return Tools::toRefIfExists($encode_data, $request);
+        return KamiTools::toRefIfExists($encode_data, $request);
     }
 
     // check user
@@ -126,7 +126,7 @@ Route::get('/callback_bind', function (Request $request) {
                 'status' => 'failed',
                 'tip' => "Duplicate entry '{$db_twitter_screen_name}' for key 'twitter_bind",
             ];
-            return Tools::toRefIfExists($encode_data, $request);
+            return KamiTools::toRefIfExists($encode_data, $request);
         }
     }else{
         // check screen_name exists.
@@ -140,7 +140,7 @@ Route::get('/callback_bind', function (Request $request) {
                 'status' => 'failed',
                 'tip' => "{$db_twitter_screen_name} is already bound.",
             ];
-            return Tools::toRefIfExists($encode_data, $request);
+            return KamiTools::toRefIfExists($encode_data, $request);
         }
 
         // with insert
@@ -164,7 +164,7 @@ Route::get('/callback_bind', function (Request $request) {
             'twitter_screen_name' => $db_twitter_screen_name,
         ],
     ];
-    return Tools::toRefIfExists($encode_data, $request);
+    return KamiTools::toRefIfExists($encode_data, $request);
 });
 
 
@@ -189,7 +189,7 @@ Route::get('/callback_unbind', function (Request $request) {
             'status' => 'failed',
             'tip' => $exc->getMessage(),
         ];
-        return Tools::toRefIfExists($encode_data, $request);
+        return KamiTools::toRefIfExists($encode_data, $request);
     }
 
     // ato_address,twitter_screen_name
@@ -200,7 +200,7 @@ Route::get('/callback_unbind', function (Request $request) {
             'status' => 'failed',
             'tip' => 'Need bind address',
         ];
-        return Tools::toRefIfExists($encode_data, $request);
+        return KamiTools::toRefIfExists($encode_data, $request);
     }
 
     // check user
@@ -237,7 +237,7 @@ Route::get('/callback_unbind', function (Request $request) {
                 'status' => 'failed',
                 'tip' => "No binding found, {$db_ato_address} & {$db_twitter_screen_name}",
             ];
-            return Tools::toRefIfExists($encode_data, $request);
+            return KamiTools::toRefIfExists($encode_data, $request);
         }
 
     }
@@ -249,7 +249,7 @@ Route::get('/callback_unbind', function (Request $request) {
             'twitter_screen_name' => $db_twitter_screen_name,
         ],
     ];
-    return Tools::toRefIfExists($encode_data, $request);
+    return KamiTools::toRefIfExists($encode_data, $request);
 
 });
 
