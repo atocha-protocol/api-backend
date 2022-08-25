@@ -1,5 +1,5 @@
 <?php
-namespace Tools;
+namespace App\Tools;
 
 class Tools{
     // $url="https://api.twitter.com/2/users/".$config['twitter_id']."/followers";

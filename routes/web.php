@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 //use Illuminate\Http\Request;
 use Noweh\TwitterApi\Client;
-use Tools\Tools;
+use App\Tools\Tools as KamiTools;
 use Illuminate\Support\Facades\URL;
 
 $url = config('app.url');
@@ -42,7 +42,7 @@ Route::get('/bind/{ato_address}/{ref}', function (Request $request, $ato_address
 Route::get('/test_bind', function (Request $request) {
     $test_url_data = base64_encode('http://www.baidu.com');
     $request->session()->put('bind_ato_ref', $test_url_data);
-    return Tools::toRefIfExists($test_url_data, $request);
+    return KamiTools::toRefIfExists($test_url_data, $request);
 });
 
 // https://api.atocha.io/bind/5DvNVQ69obcSG5KwxSmbZYrVPkwvaGSSH6EswjLuNeEvBCBs/aHR0cHM6Ly9wbGF5LmF0b2NoYS5pby9teV9ob21l

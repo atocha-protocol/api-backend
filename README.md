@@ -170,5 +170,6 @@ If your User model has been moved from the default App\Models\User.php, please c
 
 ## Install 
 
+dump-autoload
 
 
