@@ -32,10 +32,13 @@ class Tools{
         if($db_bind_ato_ref != '') {
             $db_bind_ato_ref = base64_decode($db_bind_ato_ref);
             $msg='';
-            if($encode_data['status'] == 'failed') {
+            $info_status='success';
+            $msg='';
+            if(isset($encode_data['status']) && $encode_data['status'] == 'failed') {
+                $info_status=$encode_data['status'];
                 $msg=urlencode($encode_data['tip']);
             }
-            header("Location: $db_bind_ato_ref?status={$encode_data['status']}&msg={$msg}");
+            header("Location: {$db_bind_ato_ref}?status={$info_status}&msg={$msg}");
             exit;
         }
         return json_encode($encode_data);

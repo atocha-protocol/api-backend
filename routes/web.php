@@ -27,6 +27,7 @@ Route::get('/', function () {
 
 
 Route::get('/bind/{ato_address}/{ref}', function (Request $request, $ato_address, $ref) {
+
     $connection = new TwitterOAuth(env('TWITTER_CONSUMER_KEY'), env('TWITTER_CONSUMER_SECRET'), env('TWITTER_ACCESS_TOKEN'), env('TWITTER_ACCESS_TOKEN_SECRET'));
 //    $request_tokens = $connection->oauth("oauth/request_token", ["oauth_callback"=> env('APP_URL')."/callback_bind"]);
     $request_tokens = $connection->oauth("oauth/request_token", ["oauth_callback"=> env('APP_URL')."/callback_bind", "x_auth_access_type"=>"write"]);
@@ -38,6 +39,13 @@ Route::get('/bind/{ato_address}/{ref}', function (Request $request, $ato_address
     return view('bindredirect', ['author'=>'Kami', 'content'=> $content, 'request_tokens'=>$request_tokens]);
 });
 
+Route::get('/test_bind', function (Request $request) {
+    $test_url_data = base64_encode('http://www.baidu.com');
+    $request->session()->put('bind_ato_ref', $test_url_data);
+    return Tools::toRefIfExists($test_url_data, $request);
+});
+
+// https://api.atocha.io/bind/5DvNVQ69obcSG5KwxSmbZYrVPkwvaGSSH6EswjLuNeEvBCBs/aHR0cHM6Ly9wbGF5LmF0b2NoYS5pby9teV9ob21l
 Route::get('/unbind/{ato_address}/{ref}', function (Request $request, $ato_address, $ref) {
     $connection = new TwitterOAuth(env('TWITTER_CONSUMER_KEY'), env('TWITTER_CONSUMER_SECRET'), env('TWITTER_ACCESS_TOKEN'), env('TWITTER_ACCESS_TOKEN_SECRET'));
     $request_tokens = $connection->oauth("oauth/request_token", ["oauth_callback"=> env('APP_URL')."/callback_unbind"]);

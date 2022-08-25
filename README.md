@@ -168,5 +168,7 @@ If your User model has been moved from the default App\Models\User.php, please c
 ### Change register page.
 * `./vendor/bin/sail artisan make:controller RegisterController --invokable`
 
+## Install 
+
 
 
